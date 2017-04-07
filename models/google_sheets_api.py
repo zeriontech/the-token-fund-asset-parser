@@ -89,6 +89,20 @@ class SheetsAPI:
         values = result.get('values', [[], [], []])
         return [(v[2], v[1], v[0]) for v in values]
 
+    def read_last_prices(self):
+        result = self._service.spreadsheets().values().get(
+            spreadsheetId=self._SHEETS_ID,
+            range='{}!B1:3'.format(self._PRICES_SHEET_NAME)
+        ).execute()
+        values = result.get('values', [[], [], []])
+        prices = {}
+        for name, symbol, price in zip(*values):
+            currency = name.split()[-1].replace('(', '').replace(')', '')
+            v = prices.get(symbol, [0, 0])
+            v[currency == 'BTC'] = price
+            prices[symbol] = v
+        return prices
+
     def _add_row(self, row, page, inputOption='RAW'):
         result = self._service.spreadsheets().batchUpdate(
             spreadsheetId=self._SHEETS_ID,

@@ -39,7 +39,7 @@ def fetch_prices():
     asset_names, asset_symbols = api.read_prices_assets()
     asset_symbols_set = set(asset_symbols)
     coinmarketcap_api.request_assets(on_assets_received)
-    return prices
+    return api.read_last_prices()
     
 if __name__ == '__main__':
     fetch_prices()

@@ -102,6 +102,9 @@ def fetch_balances():
             future = gameCreditsAPI.get_gamecredits_balance(loop,
                 address=address,
                 callback=on_amount_received)
+        else:
+            print("unknown symbol:", symbol)
+            continue
         asset_futures.append(future)
 
     asset_futures.append(poloniexAPI.get_balances(loop, callback=on_poloniex_balances_received))
