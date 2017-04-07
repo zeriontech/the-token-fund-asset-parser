@@ -1,0 +1,5 @@
+.idea
+*.pyc
+configs/client_secret.json
+configs/poloniex_keys.py
+env/
