@@ -63,45 +63,70 @@ def fetch_balances():
             poloniex_assets.add(symbol)
             continue
         if symbol == "ETH":
-            future = ethAPI.get_ether_balance(loop,
+            future = ethAPI.get_ether_balance(
+                loop,
                 address=address,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == "BTC":
-            future = btcAPI.get_btc_balance(loop,
+            future = btcAPI.get_btc_balance(
+                loop,
                 address=address,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == "ICN":
-            future = ethAPI.get_tokens_balance(loop,
+            future = ethAPI.get_tokens_balance(
+                loop,
                 address=address,
                 token='ICONOMI',
                 decimals=18,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == 'LH':
-            future = ethAPI.get_tokens_balance_by_address(loop,
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
                 address=address,
                 token='LH',
                 contract_address='0x6531f133e6DeeBe7F2dcE5A0441aA7ef330B4e53',
                 decimals=8,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == 'GNT':
-            future = ethAPI.get_tokens_balance_by_address(loop,
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
                 address=address,
                 token='GNT',
                 contract_address='0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
                 decimals=18,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
+        elif symbol == "MLN":
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='MLN',
+                contract_address='0xBEB9eF514a379B997e0798FDcC901Ee474B6D9A1',
+                decimals=18,
+                callback=on_amount_received
+            )
         elif symbol == "ETC":
-            future = etcAPI.get_etc_balance(loop,
+            future = etcAPI.get_etc_balance(
+                loop,
                 address=address,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == "WAVES":
-            future = wavesAPI.get_waves_balance(loop,
+            future = wavesAPI.get_waves_balance(
+                loop,
                 address=address,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         elif symbol == "GAME":
-            future = gameCreditsAPI.get_gamecredits_balance(loop,
+            future = gameCreditsAPI.get_gamecredits_balance(
+                loop,
                 address=address,
-                callback=on_amount_received)
+                callback=on_amount_received
+            )
         else:
             print("unknown symbol:", symbol)
             continue
@@ -121,6 +146,7 @@ def fetch_balances():
 
     for symbol in asset_symbols:
         row.append(balances.get(symbol, ''))
+
     api.add_balances_row(row)
     return balances
 
