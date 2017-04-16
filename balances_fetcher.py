@@ -71,10 +71,10 @@ def fetch_balances():
         if place == 'Static':
             balances[replace(symbol)] = balances.get(replace(symbol), 0) + float(address)
             continue
-        if address == "Poloniex":
+        if place == "Poloniex":
             poloniex_assets.add(symbol)
             continue
-        if address == "Kraken":
+        if place == "Kraken":
             kraken_assets.add(symbol)
             continue
         if symbol == "ETH":
