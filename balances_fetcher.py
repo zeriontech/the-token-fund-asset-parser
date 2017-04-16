@@ -8,9 +8,10 @@ from models.blockchaininfo import BlockChainInfoAPI
 from models.etcchain import EtcChainAPI
 from models.waves import WavesAPI
 from models.poloniex import PoloniexAPI
+from models.kraken import KrakenAPI
 from models.gamecredits import GameCreditsAPI
 
-from configs import poloniex_keys
+from configs import poloniex_keys, kraken_keys
 
 api = SheetsAPI()
 ethAPI = EtherscanAPI()
@@ -19,11 +20,13 @@ etcAPI = EtcChainAPI()
 wavesAPI = WavesAPI()
 gameCreditsAPI = GameCreditsAPI()
 poloniexAPI = PoloniexAPI(poloniex_keys.KEY, poloniex_keys.SECRET)
+krakenAPI = KrakenAPI(kraken_keys.KEY, kraken_keys.SECRET)
 
 addresses = {}
 balances = {}
 
 poloniex_assets = set()
+kraken_assets = set()
 
 
 def replace(symbol):
@@ -35,18 +38,27 @@ def replace(symbol):
 
 
 def on_amount_received(symbol, amount):
+    global balances
     balances[replace(symbol)] = balances.get(replace(symbol), 0) + amount
 
 
 def on_poloniex_balances_received(poloniex_balances):
+    global balances, poloniex_assets
     for asset in poloniex_assets:
         _balance = poloniex_balances.get(asset, {'available': '0.00000000', 'btcValue': '0.00000000', 'onOrders': '0.00000000'})
         balance = float(_balance['onOrders']) + float(_balance['available'])
         balances[replace(asset)] = balances.get(replace(asset), 0) + balance
 
 
+def on_kraken_balances_received(kraken_balances):
+    global balances, kraken_assets
+    for asset in kraken_assets:
+        balance = float(kraken_balances.get('X' + asset, '0.0'))
+        balances[replace(asset)] = balances.get(replace(asset), 0) + balance
+
+
 def fetch_balances():
-    global balances, addresses
+    global balances, addresses, poloniex_assets, kraken_assets
 
     balances = {}
     # read addresses from the spreadsheet
@@ -61,6 +73,9 @@ def fetch_balances():
             continue
         if address == "Poloniex":
             poloniex_assets.add(symbol)
+            continue
+        if address == "Kraken":
+            kraken_assets.add(symbol)
             continue
         if symbol == "ETH":
             future = ethAPI.get_ether_balance(
@@ -133,6 +148,7 @@ def fetch_balances():
         asset_futures.append(future)
 
     asset_futures.append(poloniexAPI.get_balances(loop, callback=on_poloniex_balances_received))
+    asset_futures.append(krakenAPI.get_balances(loop, callback=on_kraken_balances_received))
     loop.run_until_complete(asyncio.gather(*asset_futures))
     #
     # here all async requests already finished
