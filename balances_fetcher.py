@@ -97,6 +97,15 @@ def fetch_balances():
                 decimals=18,
                 callback=on_amount_received
             )
+        elif symbol == "HMQ":
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='HMQ',
+                contract_address='0xcbcc0f036ed4788f63fc0fee32873d6a7487b908',
+                decimals=8,
+                callback=on_amount_received
+            )
         elif symbol == 'LH':
             future = ethAPI.get_tokens_balance_by_address(
                 loop,
@@ -112,6 +121,15 @@ def fetch_balances():
                 address=address,
                 token='GNT',
                 contract_address='0xa74476443119A942dE498590Fe1f2454d7D4aC0d',
+                decimals=18,
+                callback=on_amount_received
+            )
+        elif symbol == 'REP':
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='REP',
+                contract_address='0x48c80F1f4D53D5951e5D5438B54Cba84f29F32a5',
                 decimals=18,
                 callback=on_amount_received
             )
