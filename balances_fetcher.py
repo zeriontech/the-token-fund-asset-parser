@@ -142,6 +142,24 @@ def fetch_balances():
                 decimals=18,
                 callback=on_amount_received
             )
+        elif symbol == "ANT":
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='ANT',
+                contract_address='0x960b236A07cf122663c4303350609A66A7B288C0',
+                decimals=18,
+                callback=on_amount_received
+            )
+        elif symbol == "BCAP":
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='BCAP',
+                contract_address='0xff3519eeeea3e76f1f699ccce5e23ee0bdda41ac',
+                decimals=0,
+                callback=on_amount_received
+            )
         elif symbol == "ETC":
             future = etcAPI.get_etc_balance(
                 loop,
