@@ -54,7 +54,7 @@ def fetch_prices():
         currency = name.split()[-1].replace('(', '').replace(')', '')
         price = prices.get(symbol, ('', ''))[0 if currency == 'USD' else 1]
         if symbol == 'EUR' and currency == 'BTC':
-            price = str(float(prices.get('BTC', (1, 1))[0]) / float(prices.get('EUR', (-1, -1))[0]))
+            price = str(float(prices.get('EUR', (-1, -1))[0]) / float(prices.get('BTC', (1, 1))[0]))
         if price == '':
             price = '=INDIRECT(ADDRESS(ROW() + 1,COLUMN()))'
         row.append(price)
