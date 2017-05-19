@@ -29,7 +29,7 @@ class CoinmarketcapAPI(Fetcher):
     def __init__(self, assets_limit=150):
         self._ASSETS_LIMIT = assets_limit
 
-    async def _get(self, loop, callback):
+    async def request_assets(self, loop, callback):
         async with aiohttp.ClientSession(loop=loop) as session:
             ticker = await self._fetch(session, self._COINMARKETCAP_URL.format(self._ASSETS_LIMIT))
             ticker = json.loads(ticker)
@@ -38,11 +38,3 @@ class CoinmarketcapAPI(Fetcher):
                             asset.get("price_usd"),
                             asset.get("price_btc"),
                             int(asset.get("last_updated"))) for asset in ticker])
-
-    def request_assets(self, callback):
-        """
-        executes asynchronously
-        :param callback: function to handle received assets
-        """
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self._get(loop, callback))
