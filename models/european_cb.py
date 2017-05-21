@@ -13,5 +13,5 @@ class EuropeanCBAPI(Fetcher):
             tree = ET.fromstring(response)
             for rate in tree[2][0]:
                 if rate.get('currency') == 'USD':
-                    callback(str(1. / float(rate.get('rate'))))
+                    callback(rate.get('rate'))
                     break
