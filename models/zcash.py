@@ -4,11 +4,11 @@ import json
 from .fetcher import Fetcher
 
 
-class EtcChainAPI(Fetcher):
+class ZCashAPI(Fetcher):
 
-    _URL = 'https://etcchain.com/api/v1/getAddressBalance?address={}'
+    _URL = 'https://api.zcha.in/v2/mainnet/accounts/{}'
 
-    async def get_etc_balance(self, loop, address, callback):
+    async def get_zcash_balance(self, loop, address, callback):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -17,9 +17,9 @@ class EtcChainAPI(Fetcher):
             response = json.loads(response)
 
             balance = -1
-            try:
-                balance = float(response.get('balance'))
-            except TypeError as _:
-                print("You provided wrong address!")
 
-            callback('ETC', balance)
+            try:
+                balance = float(response.get("balance"))
+            except AttributeError as _:
+                print("You provided wrong address!")
+            callback('ZEC', balance)

@@ -9,7 +9,12 @@ from models.etcchain import EtcChainAPI
 from models.waves import WavesAPI
 from models.poloniex import PoloniexAPI
 from models.kraken import KrakenAPI
+from models.litecoin import LitecoinAPI
+from models.zcash import ZCashAPI
 from models.gamecredits import GameCreditsAPI
+from models.dash import DashAPI
+from models.ripple import RippleAPI
+from models.maidcoin import MaidCoinAPI
 
 from configs import poloniex_keys, kraken_keys
 
@@ -19,6 +24,11 @@ btcAPI = BlockChainInfoAPI()
 etcAPI = EtcChainAPI()
 wavesAPI = WavesAPI()
 gameCreditsAPI = GameCreditsAPI()
+litecoinAPI = LitecoinAPI()
+zcashAPI = ZCashAPI()
+rippleAPI = RippleAPI()
+dashAPI = DashAPI()
+maidAPI = MaidCoinAPI()
 poloniexAPI = PoloniexAPI(poloniex_keys.KEY, poloniex_keys.SECRET)
 krakenAPI = KrakenAPI(kraken_keys.KEY, kraken_keys.SECRET)
 
@@ -175,6 +185,36 @@ def fetch_balances():
             )
         elif symbol == "GAME":
             future = gameCreditsAPI.get_gamecredits_balance(
+                loop,
+                address=address,
+                callback=on_amount_received
+            )
+        elif symbol == "LTC":
+            future = litecoinAPI.get_ltc_balance(
+                loop,
+                address=address,
+                callback=on_amount_received
+            )
+        elif symbol == "ZEC":
+            future = zcashAPI.get_zcash_balance(
+                loop,
+                address=address,
+                callback=on_amount_received
+            )
+        elif symbol == "XRP":
+            future = rippleAPI.get_ripple_balance(
+                loop,
+                address=address,
+                callback=on_amount_received
+            )
+        elif symbol == "DASH":
+            future = dashAPI.get_dash_balance(
+                loop,
+                address=address,
+                callback=on_amount_received
+            )
+        elif symbol == "MAID":
+            future = maidAPI.get_maid_balance(
                 loop,
                 address=address,
                 callback=on_amount_received
