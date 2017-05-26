@@ -61,9 +61,12 @@ def on_poloniex_balances_received(poloniex_balances):
 
 
 def on_kraken_balances_received(kraken_balances):
+    print(kraken_balances)
     global balances, kraken_assets
     for asset in kraken_assets:
         prefix = 'Z' if asset == 'EUR' or asset == 'USD' else 'X'
+        if asset == 'BTC':
+            asset = 'XBT'
         balance = float(kraken_balances.get(prefix + asset, '0.0'))
         balances[replace(asset)] = balances.get(replace(asset), 0) + balance
 
