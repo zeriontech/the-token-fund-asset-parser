@@ -173,6 +173,15 @@ def fetch_balances():
                 decimals=0,
                 callback=on_amount_received
             )
+        elif symbol == 'BAT':
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='BAT',
+                contract_address='0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+                decimals=18,
+                callback=on_amount_received
+            )
         elif symbol == "ETC":
             future = etcAPI.get_etc_balance(
                 loop,
