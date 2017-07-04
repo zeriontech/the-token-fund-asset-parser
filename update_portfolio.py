@@ -16,6 +16,8 @@ def update_portfolio():
 
     whole_usd_price = sum([balances.get(asset) * float(prices.get(asset)[0]) for asset in asset_symbols if balances.get(asset,0) > 0])
 
+    portfolio = []
+
     for asset in asset_symbols:
         if balances.get(asset, 0) > 0:
 
@@ -33,7 +35,8 @@ def update_portfolio():
                 balances.get(asset) * float(prices.get(asset)[0]) / whole_usd_price,
             ]
             api.add_portfolio_row(row)
-    return date
+            portfolio.append(row)
+    return date, portfolio
     
 if __name__ == '__main__':
     update_portfolio()

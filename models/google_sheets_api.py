@@ -149,5 +149,23 @@ class SheetsAPI:
     def add_daily_performance_row(self, row):
         self._add_row(row, self._DAILY_PERFORMANCE_SHEET_NAME, inputOption='USER_ENTERED')
 
+    def get_latest_token_supply(self):
+        result = self._service.spreadsheets().values().get(
+            spreadsheetId=self._SHEETS_ID,
+            range='{}!B4'.format(self._DAILY_PERFORMANCE_SHEET_NAME)
+        ).execute()
+        return float(result.get('values', [[]])[0][0])
+
+    def get_latest_token_prices(self):
+        result = self._service.spreadsheets().values().get(
+            spreadsheetId=self._SHEETS_ID,
+            range='{}!4:4'.format(self._DAILY_PERFORMANCE_SHEET_NAME)
+        ).execute()
+        row = result.get('values', [[0] * 15])[0]
+        print(row)
+        return [float(row[6]), float(row[9]), float(row[12])]
+
+
+
     def add_portfolio_row(self, row):
         self._add_row(row, self._PORTFOLIO_SHEET_NAME, inputOption='USER_ENTERED')
