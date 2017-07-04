@@ -35,7 +35,7 @@ class SheetsAPI:
         _DAILY_PERFORMANCE_SHEET_NAME: 3
     }
 
-    def __init__(self, sheets_id='1-17h6aLNXPtMDZRRLJk-TQQfv7-CdVj-g1Bo7iJTrrA', app_name='Assets Parser'):
+    def __init__(self, sheets_id='1gF-meTYuW4yRX9vqRYtsDTU7fBnvRotPGterlWMTsw0', app_name='Assets Parser'):
         self._SHEETS_ID = sheets_id
         self._APPLICATION_NAME = app_name
         self._credentials = self._get_credentials()
