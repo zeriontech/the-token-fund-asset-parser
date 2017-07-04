@@ -14,6 +14,8 @@ def update_portfolio():
     prices = fetch_prices()
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
 
+    whole_usd_price = sum([balances.get(asset) * float(prices.get(asset)[0]) for asset in asset_symbols if balances.get(asset,0) > 0])
+
     for asset in asset_symbols:
         if balances.get(asset, 0) > 0:
 
@@ -25,10 +27,10 @@ def update_portfolio():
                 prices.get(asset)[1],
                 float(prices.get(asset)[1]) / float(prices.get('ETH')[1]),
                 balances.get(asset),
-                '=INDIRECT(ADDRESS(ROW();COLUMN() - 1))*INDIRECT(ADDRESS(ROW();COLUMN()-4))',
-                '=INDIRECT(ADDRESS(ROW();COLUMN() - 2))*INDIRECT(ADDRESS(ROW();COLUMN()-4))',
-                '=INDIRECT(ADDRESS(ROW();COLUMN() - 3))*INDIRECT(ADDRESS(ROW();COLUMN()-4))',
-                '=INDIRECT(ADDRESS(ROW();COLUMN() - 3))/sumif(A:A, INDIRECT(ADDRESS(ROW();1)), H:H)',
+                balances.get(asset) * float(prices.get(asset)[0]),
+                balances.get(asset) * float(prices.get(asset)[1]),
+                balances.get(asset) * (float(prices.get(asset)[1]) / float(prices.get('ETH')[1])),
+                balances.get(asset) * float(prices.get(asset)[0]) / whole_usd_price,
             ]
             api.add_portfolio_row(row)
     return date
