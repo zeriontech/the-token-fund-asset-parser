@@ -159,10 +159,10 @@ class SheetsAPI:
     def get_latest_token_prices(self):
         result = self._service.spreadsheets().values().get(
             spreadsheetId=self._SHEETS_ID,
-            range='{}!4:4'.format(self._DAILY_PERFORMANCE_SHEET_NAME)
+            range='{0}!{1}:{1}'.format(self._DAILY_PERFORMANCE_SHEET_NAME,
+                                       self._title_height[self._DAILY_PERFORMANCE_SHEET_NAME] + 1)
         ).execute()
         row = result.get('values', [[0] * 15])[0]
-        print(row)
         return [float(row[6]), float(row[9]), float(row[12])]
 
 
