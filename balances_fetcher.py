@@ -65,6 +65,7 @@ def on_kraken_balances_received(kraken_balances):
     for asset in kraken_assets:
         prefix = 'Z' if asset == 'EUR' or asset == 'USD' else 'X'
         if asset == 'BTC': asset = 'XBT'
+        if asset == 'EOS': prefix = ''  # no idea why EOS doesn't have 'X' prefix
         balance = float(kraken_balances.get(prefix + asset, '0.0'))
         if asset == 'XBT': asset = 'BTC'
         balances[replace(asset)] = balances.get(replace(asset), 0) + balance
@@ -200,7 +201,15 @@ def fetch_balances():
                 decimals=18,
                 callback=on_amount_received
             )
-
+        elif symbol == 'SNM':
+            future = ethAPI.get_tokens_balance_by_address(
+                loop,
+                address=address,
+                token='SNM',
+                contract_address='0x983F6d60db79ea8cA4eB9968C6aFf8cfA04B3c63',
+                decimals=18,
+                callback=on_amount_received
+            )
         elif symbol == "ETC":
             future = etcAPI.get_etc_balance(
                 loop,

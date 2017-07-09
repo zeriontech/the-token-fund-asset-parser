@@ -35,7 +35,7 @@ class SheetsAPI:
         _DAILY_PERFORMANCE_SHEET_NAME: 3
     }
 
-    def __init__(self, sheets_id='1gF-meTYuW4yRX9vqRYtsDTU7fBnvRotPGterlWMTsw0', app_name='Assets Parser'):
+    def __init__(self, sheets_id='1kFi2uGX3RZYFj76cXNE93ys3hJY49XhHtPCj_Sc5nNE', app_name='Assets Parser'):
         self._SHEETS_ID = sheets_id
         self._APPLICATION_NAME = app_name
         self._credentials = self._get_credentials()
@@ -164,8 +164,6 @@ class SheetsAPI:
         ).execute()
         row = result.get('values', [[0] * 15])[0]
         return [float(row[6]), float(row[9]), float(row[12])]
-
-
 
     def add_portfolio_row(self, row):
         self._add_row(row, self._PORTFOLIO_SHEET_NAME, inputOption='USER_ENTERED')

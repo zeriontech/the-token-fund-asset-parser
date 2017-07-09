@@ -45,7 +45,7 @@ class KrakenAPI(Fetcher):
                 'API-Key': self._KEY
             }
 
-            async with session.post(self._URL + urlpath, data=data, headers=headers) as response:
-                response = await response.text()
-                result = json.loads(response).get('result', {})
-                callback(result)
+            response = await self._fetch_post(session=session, url=self._URL + urlpath, data=data, headers=headers)
+            if response is None: raise Exception('kraken didn\'t response')
+            result = json.loads(response).get('result', {})
+            callback(result)

@@ -31,6 +31,7 @@ class PoloniexAPI(Fetcher):
                 'Sign': sign.hexdigest(),
                 'Key': self._KEY
             }
-            async with session.post(self._URL, data=data, headers=headers) as response:
-                result = await response.text()
-                callback(json.loads(result))
+
+            response = await self._fetch_post(session=session, url=self._URL, data=data, headers=headers)
+            if response is None: raise Exception('poloniex didn\'t response')
+            callback(json.loads(response))

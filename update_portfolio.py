@@ -14,7 +14,7 @@ def update_portfolio():
     prices = fetch_prices()
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
 
-    whole_usd_price = sum([balances.get(asset) * float(prices.get(asset)[0]) for asset in asset_symbols if balances.get(asset,0) > 0])
+    whole_usd_price = sum([balances.get(asset) * float(prices.get(asset)[0]) for asset in asset_symbols if balances.get(asset, 0) > 0])
 
     portfolio = []
 
