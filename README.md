@@ -16,6 +16,6 @@ You can also use these scripts separately:
  
  Balances fetcher works for following currencies:
  
- BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT. SNT, STORJ
+ BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT, SNT, STORJ, SONM
  - Poloniex
  - Kraken
