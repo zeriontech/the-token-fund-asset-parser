@@ -20,7 +20,6 @@ def update_portfolio():
 
     for asset in asset_symbols:
         if balances.get(asset, 0) > 0:
-
             row = [
                 date,
                 asset_names[asset_symbols.index(asset)],
@@ -34,8 +33,8 @@ def update_portfolio():
                 balances.get(asset) * (float(prices.get(asset)[1]) / float(prices.get('ETH')[1])),
                 balances.get(asset) * float(prices.get(asset)[0]) / whole_usd_price,
             ]
-            api.add_portfolio_row(row)
             portfolio.append(row)
+    api.add_portfolio(portfolio)
     return date, portfolio
     
 if __name__ == '__main__':

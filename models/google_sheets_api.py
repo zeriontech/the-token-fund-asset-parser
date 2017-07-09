@@ -103,7 +103,7 @@ class SheetsAPI:
             prices[symbol] = v
         return prices
 
-    def _add_row(self, row, page, inputOption='RAW'):
+    def _add_rows(self, rows, page, inputOption='RAW'):
         result = self._service.spreadsheets().batchUpdate(
             spreadsheetId=self._SHEETS_ID,
             body={
@@ -114,8 +114,8 @@ class SheetsAPI:
                                 'sheetId': self._sheet_id.get(page),
                                 'dimension': 'ROWS',
                                 'startIndex': self._title_height.get(page),
-                                'endIndex': self._title_height.get(page) + 1
-                            }
+                                'endIndex': self._title_height.get(page) + len(rows)
+                            },
                         }
                     }
                 ]
@@ -125,13 +125,13 @@ class SheetsAPI:
         result = self._service.spreadsheets().values().append(
             spreadsheetId=self._SHEETS_ID,
             range='{}!A1:1'.format(page),
-            body={'range': '{}!A1:1'.format(page), 'majorDimension': 'ROWS', 'values': [row]},
+            body={'range': '{}!A1:1'.format(page), 'majorDimension': 'ROWS', 'values': rows},
             valueInputOption=inputOption
         ).execute()
         print(result)
 
     def add_balances_row(self, row):
-        self._add_row(row, self._BALANCES_SHEET_NAME)
+        self._add_rows([row], self._BALANCES_SHEET_NAME)
 
     def add_prices_row(self, row):
         # for prices convert them to numbers
@@ -141,13 +141,10 @@ class SheetsAPI:
             except:
                 pass
             row[index + 1] = value
-        self._add_row(row, self._PRICES_SHEET_NAME, inputOption='USER_ENTERED')
-
-    # def add_performance_row(self, row):
-    #     self._add_row(row, self._PERFORMANCE_SHEET_NAME, inputOption='USER_ENTERED')
+        self._add_rows([row], self._PRICES_SHEET_NAME, inputOption='USER_ENTERED')
 
     def add_daily_performance_row(self, row):
-        self._add_row(row, self._DAILY_PERFORMANCE_SHEET_NAME, inputOption='USER_ENTERED')
+        self._add_rows([row], self._DAILY_PERFORMANCE_SHEET_NAME, inputOption='USER_ENTERED')
 
     def get_latest_token_supply(self):
         result = self._service.spreadsheets().values().get(
@@ -165,5 +162,5 @@ class SheetsAPI:
         row = result.get('values', [[0] * 15])[0]
         return [float(row[6]), float(row[9]), float(row[12])]
 
-    def add_portfolio_row(self, row):
-        self._add_row(row, self._PORTFOLIO_SHEET_NAME, inputOption='USER_ENTERED')
+    def add_portfolio(self, rows):
+        self._add_rows(rows, self._PORTFOLIO_SHEET_NAME, inputOption='USER_ENTERED')
