@@ -23,29 +23,37 @@ def update_daily_performance():
     # Updates current portfolio
     # Uses same date as in portfolio for correct filtering
     global number_of_tokens
-    date = update_portfolio()
+    date, portfolio = update_portfolio()
+
+    assets_usd_price = sum([row[7] for row in portfolio])
+    assets_btc_price = sum([row[8] for row in portfolio])
+    assets_eth_price = sum([row[9] for row in portfolio])
+
+    latest_token_prices = api.get_latest_token_prices()
+    latest_token_supply = api.get_latest_token_supply()
 
     loop = asyncio.get_event_loop()
 
     future = tokenSupplyAPI.get_token_supply(loop, on_token_supply_fetched)
     loop.run_until_complete(future)
 
+
     row = [
         date,  # Date
         number_of_tokens,  # Token supply
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 1))-INDIRECT(ADDRESS(ROW() + 1;COLUMN() - 1))',  # 12h change in token supply
-        '=sumif(Portfolio!A:A;INDIRECT(ADDRESS(ROW();COLUMN()-3));Portfolio!H:H)',  # USD Portfolio value
-        '=sumif(Portfolio!A:A;INDIRECT(ADDRESS(ROW();COLUMN()-4));Portfolio!I:I)',  # BTC Portfolio value
-        '=sumif(Portfolio!A:A;INDIRECT(ADDRESS(ROW();COLUMN()-5));Portfolio!J:J)',  # ETH Portfolio value
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 3))/INDIRECT(ADDRESS(ROW();COLUMN() - 5))',  # USD Token price
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 1))/INDIRECT(ADDRESS(ROW() + 1;COLUMN() - 1)) - 1',  # USD price 12h change
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 2))/10 - 1',
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 5))/INDIRECT(ADDRESS(ROW();COLUMN() - 8))',  # BTC Token price
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 1))/INDIRECT(ADDRESS(ROW() + 1;COLUMN() - 1)) - 1',  # BTC price 12h change
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 2))/0.010103 - 1',
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 7))/INDIRECT(ADDRESS(ROW();COLUMN() - 11))',  # ETH Token price
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 1))/INDIRECT(ADDRESS(ROW() + 1;COLUMN() - 1)) - 1',  # ETH price 12h change
-        '=INDIRECT(ADDRESS(ROW();COLUMN() - 2))/0.206957 - 1',
+        number_of_tokens - latest_token_supply, # 12h change in token supply
+        assets_usd_price,
+        assets_btc_price,
+        assets_eth_price,
+        assets_usd_price / number_of_tokens, # USD Token price
+        assets_usd_price / number_of_tokens / latest_token_prices[0] - 1, # USD price 12h change
+        assets_usd_price / number_of_tokens / 10.0 - 1,
+        assets_btc_price / number_of_tokens, # USD Token price
+        assets_btc_price / number_of_tokens / latest_token_prices[1] - 1, # BTC price 12h change
+        assets_btc_price / number_of_tokens / 0.010103 - 1,
+        assets_eth_price / number_of_tokens, # USD Token price
+        assets_eth_price / number_of_tokens / latest_token_prices[2] - 1, # ETH price 12h change
+        assets_eth_price / number_of_tokens / 0.206957 - 1,
     ]
     api.add_daily_performance_row(row)
 

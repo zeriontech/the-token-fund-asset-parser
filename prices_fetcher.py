@@ -47,16 +47,17 @@ def fetch_prices():
     #
 
     global prices
+
+    latest_prices = api.read_last_prices()
     # compose new line
     date = datetime.now().strftime('%Y-%m-%d %H:%M')
     row = [date]
     for name, symbol in zip(asset_names, asset_symbols):
         currency = name.split()[-1].replace('(', '').replace(')', '')
-        price = prices.get(symbol, ('', ''))[0 if currency == 'USD' else 1]
+        price = prices.get(symbol, latest_prices.get(symbol))[0 if currency == 'USD' else 1]
+        print(price, latest_prices.get(symbol))
         if symbol == 'EUR' and currency == 'BTC':
             price = str(float(prices.get('EUR', (-1, -1))[0]) / float(prices.get('BTC', (1, 1))[0]))
-        if price == '':
-            price = '=INDIRECT(ADDRESS(ROW() + 1,COLUMN()))'
         row.append(price)
     api.add_prices_row(row)
 
