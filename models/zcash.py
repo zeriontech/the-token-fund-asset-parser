@@ -8,7 +8,7 @@ class ZCashAPI(Fetcher):
 
     _URL = 'https://api.zcha.in/v2/mainnet/accounts/{}'
 
-    async def get_zcash_balance(self, loop, address, callback):
+    async def get_zcash_balance(self, loop, address, symbol='ZEC', callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -16,10 +16,10 @@ class ZCashAPI(Fetcher):
             response = await self._fetch(session, endpoint)
             response = json.loads(response)
 
-            balance = -1
-
             try:
-                balance = float(response.get("balance"))
+                balance = float(response.get("balance", -1))
             except AttributeError as _:
                 print("You provided wrong address!")
-            callback('ZEC', balance)
+            if callback is not None:
+                callback(symbol, balance)
+        return symbol, balance

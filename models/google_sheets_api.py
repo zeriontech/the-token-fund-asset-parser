@@ -29,14 +29,17 @@ class SheetsAPI:
     _title_height = {
         _PRICES_SHEET_NAME: 2,
         _BALANCES_SHEET_NAME: 2,
-        _ADDRESSES_SHEET_NAME: 0,
+        _ADDRESSES_SHEET_NAME: 1,
         _PORTFOLIO_SHEET_NAME: 1,
         # _PERFORMANCE_SHEET_NAME: 2,
         _DAILY_PERFORMANCE_SHEET_NAME: 3
     }
 
-    def __init__(self, sheets_id='1kFi2uGX3RZYFj76cXNE93ys3hJY49XhHtPCj_Sc5nNE', app_name='Assets Parser'):
+    def __init__(self, sheets_id, app_name='Assets Parser', secret_file=None):
+
         self._SHEETS_ID = sheets_id
+        if secret_file is not None:
+            self._CLIENT_SECRET_FILE = secret_file
         self._APPLICATION_NAME = app_name
         self._credentials = self._get_credentials()
         http = self._credentials.authorize(httplib2.Http())
@@ -61,6 +64,7 @@ class SheetsAPI:
         store = Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
+            flow = client.flow
             flow = client.flow_from_clientsecrets(self._CLIENT_SECRET_FILE, self._SCOPES)
             flow.user_agent = self._APPLICATION_NAME
             credentials = tools.run_flow(flow, store)
@@ -84,7 +88,7 @@ class SheetsAPI:
     def read_addresses(self):
         result = self._service.spreadsheets().values().get(
             spreadsheetId=self._SHEETS_ID,
-            range='{}!A2:C'.format(self._ADDRESSES_SHEET_NAME)
+            range='{0}!A{1}:C'.format(self._ADDRESSES_SHEET_NAME, self._title_height[self._ADDRESSES_SHEET_NAME] + 1)
         ).execute()
         values = result.get('values', [[], [], []])
         return [(v[2], v[1], v[0]) for v in values]
@@ -98,8 +102,8 @@ class SheetsAPI:
         prices = {}
         for name, symbol, price in zip(*values):
             currency = name.split()[-1].replace('(', '').replace(')', '')
-            v = prices.get(symbol, [0, 0])
-            v[currency == 'BTC'] = price
+            v = prices.get(symbol, {})
+            v[currency] = float(price)
             prices[symbol] = v
         return prices
 

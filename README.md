@@ -2,18 +2,23 @@
 
 Requires authorisation via etherionlab@gmail.com
 
+## Config
+See [sample.yml](configs/sample.yml)
+
+## Server endpoints
+* `/update_table`: updates the google sheet with actual information on balances, prices, etc.
+    Returns JSON `{"status": "OK", "data": none}` on success
+
+* `/token_price`: fetches the actual token price. Returns JSON `{"USD": 12.3, "BTC": 32.1, "ETH": 21.3, "token_supply": 1234"}` on success
+
+
 ## Scripts
 
 First activate virtualenv by running:
 `source env/bin/activate`
 
-`python update_performance.py` - updates prices, balances and portfolio of the fund.
+`python3 update_table_py` - updates prices, balances and portfolio of the fund.
 
-You can also use these scripts separately:
- - `python balances_fetcher.py` - updates balances of addresses
- - `python prices_fetcher.py` - updates prices of assets if their names are in the top100 of most popular assets at coinmarketcup.com
- - `python update_portfolio.py` - update portfolio of the fund (all assets under control with their prices).
- 
  Balances fetcher works for following currencies:
  
  BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT, SNT, STORJ, SONM
