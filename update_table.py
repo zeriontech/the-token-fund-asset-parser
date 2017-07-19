@@ -76,8 +76,8 @@ def update_daily_performance(api, date, portfolio):
 
     portfolio_value = {
         'USD': sum([value.get('USD') for value in portfolio.values()]),
-        'BTC': sum([value.get('USD') for value in portfolio.values()]),
-        'ETH': sum([value.get('USD') for value in portfolio.values()]),
+        'BTC': sum([value.get('BTC') for value in portfolio.values()]),
+        'ETH': sum([value.get('ETH') for value in portfolio.values()]),
     }
 
     latest_token_prices = api.get_latest_token_prices()

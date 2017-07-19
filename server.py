@@ -55,15 +55,16 @@ class FetchTokenHandler(BaseHandler):
 
         assets = api.read_prices_assets()
         last_prices = api.read_last_prices()
+
         prices = fetch_prices(assets[1])
         for symbol, price in last_prices.items():
             prices.setdefault(symbol, price)
         portfolio = fetch_portfolio(balances, prices)
         token_supply = fetch_token_supply()
         portfolio_value = {
-            'USD': sum([value.get('USD') for value in portfolio.values()]),
-            'BTC': sum([value.get('USD') for value in portfolio.values()]),
-            'ETH': sum([value.get('USD') for value in portfolio.values()]),
+            'USD': sum([value.get('USD') for value in portfolio.values()]) / token_supply,
+            'BTC': sum([value.get('BTC') for value in portfolio.values()]) / token_supply,
+            'ETH': sum([value.get('ETH') for value in portfolio.values()]) / token_supply,
             'token_supply': token_supply
         }
         return portfolio_value
