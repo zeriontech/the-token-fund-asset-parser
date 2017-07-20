@@ -26,12 +26,6 @@ class Asset:
 class CoinmarketcapAPI(Fetcher):
     _COINMARKETCAP_URL = 'https://api.coinmarketcap.com/v1/ticker?limit={}'
 
-    # Coins that doesnt have
-    _bad_coins = [
-        'bond',
-        'miyucoin',
-    ]
-
     def __init__(self, assets_limit=150):
         self._ASSETS_LIMIT = assets_limit
 
@@ -43,8 +37,7 @@ class CoinmarketcapAPI(Fetcher):
                             asset.get("symbol"),
                             asset.get("price_usd"),
                             asset.get("price_btc"),
-                            int(asset.get("last_updated", -1))) for asset in ticker if asset.get("symbol") in assets]
+                            int(asset.get("last_updated", -1)) or -1) for asset in ticker if asset.get("symbol") in assets]
             if callback is not None:
                 callback(prices)
-        print(len(assets), len(prices))
         return prices
