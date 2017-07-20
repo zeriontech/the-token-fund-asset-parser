@@ -3,7 +3,10 @@
 Requires authorisation via etherionlab@gmail.com
 
 ## Config
-See [sample.yml](configs/sample.yml)
+Default config path is `configs/main.yml`
+
+You need to fill config file with your credentials information. For example see [example.yml](configs/example.yml)
+
 
 ## Server endpoints
 * `/update_table`: updates the google sheet with actual information on balances, prices, etc.
