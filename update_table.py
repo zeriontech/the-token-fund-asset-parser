@@ -1,5 +1,4 @@
-import asyncio
-import time
+from datetime import datetime
 
 from fetchers.balances import fetch_balances
 from fetchers.prices import fetch_prices
@@ -109,7 +108,7 @@ def update_daily_performance(api, date, portfolio):
 
 def update_table(config):
     api = SheetsAPI(sheets_id=config['sheets']['id'], secret_file=config['sheets']['secret_file'])
-    date = time.strftime('%Y-%m-%d %H:%M %Z')
+    date = datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
     balances = update_balances(api, config, date)
 
     prices = update_prices(api, date)
