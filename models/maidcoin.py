@@ -7,7 +7,7 @@ class MaidCoinAPI(Fetcher):
 
     _URL = 'http://omniexplorer.info/ask.aspx?api=getbalance&prop=3&address={}'
 
-    async def get_maid_balance(self, loop, address, callback):
+    async def get_maid_balance(self, loop, address, symbol='MAID', callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -15,4 +15,6 @@ class MaidCoinAPI(Fetcher):
             response = await self._fetch(session, endpoint)
 
             balance = float(response)
-            callback('MAID', balance)
+            if callback is not None:
+                callback(symbol, balance)
+        return symbol, balance

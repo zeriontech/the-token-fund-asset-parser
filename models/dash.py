@@ -8,7 +8,7 @@ class DashAPI(Fetcher):
 
     _URL = 'https://api.blockcypher.com/v1/dash/main/addrs/{}'
 
-    async def get_dash_balance(self, loop, address, callback):
+    async def get_dash_balance(self, loop, address, symbol='DASH', callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -25,4 +25,6 @@ class DashAPI(Fetcher):
                     print(err_mess)
                 except Exception as _:
                     print("Something strange happened with Dash API.")
-            callback('DASH', balance)
+            if callback is not None:
+                callback(symbol, balance)
+        return symbol, balance

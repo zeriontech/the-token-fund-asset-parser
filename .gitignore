@@ -3,4 +3,5 @@
 configs/client_secret.json
 configs/poloniex_keys.py
 configs/kraken_keys.py
+configs/main.yml
 env/

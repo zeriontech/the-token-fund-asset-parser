@@ -8,7 +8,7 @@ class WavesAPI(Fetcher):
 
     _URL = 'https://nodes.wavesnodes.com/addresses/balance/{}'
 
-    async def get_waves_balance(self, loop, address, callback):
+    async def get_waves_balance(self, loop, address, symbol='WAVES', callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -16,4 +16,6 @@ class WavesAPI(Fetcher):
             response = await self._fetch(session, endpoint)
             response = json.loads(response).get('balance')
             amount = float(response) / 10 ** 8
-            callback('WAVES', amount)
+            if callback is not None:
+                callback(symbol, amount)
+        return symbol, amount

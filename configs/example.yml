@@ -1,0 +1,11 @@
+kraken:
+    secret: "put your kraken secret here"
+    key: "put your kraken key here"
+poloniex:
+    secret: "put your poloniex secret here"
+    key: "put your poloniex key here"
+sheets:
+    id: 'your google sheets id'
+    secret_file: 'configs/client_secret.json'
+bugsnag:
+    api_key: 'bugsnag api key here'

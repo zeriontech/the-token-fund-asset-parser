@@ -8,7 +8,7 @@ class BlockChainInfoAPI(Fetcher):
 
     _URL = 'https://blockchain.info/ru/address/{}?format=json'
 
-    async def get_btc_balance(self, loop, address, callback):
+    async def get_btc_balance(self, loop, address, symbol='BTC', callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
@@ -16,4 +16,6 @@ class BlockChainInfoAPI(Fetcher):
             response = await self._fetch(session, endpoint)
             response = json.loads(response).get('final_balance')
             amount = float(response) / 10 ** 8  # from satoshi to BTC
-            callback('BTC', amount)
+            if callback is not None:
+                callback(symbol, amount)
+        return symbol, amount
