@@ -44,7 +44,7 @@ class SheetsAPI:
         self._credentials = self._get_credentials()
         http = self._credentials.authorize(httplib2.Http())
         self._service = discovery.build('sheets', 'v4', http=http,
-                                        discoveryServiceUrl=self._DISCOVERY_URL)
+                                        discoveryServiceUrl=self._DISCOVERY_URL, cache_discovery=False)
 
     def _get_credentials(self):
         """Gets valid user credentials from storage.
@@ -64,7 +64,6 @@ class SheetsAPI:
         store = Storage(credential_path)
         credentials = store.get()
         if not credentials or credentials.invalid:
-            flow = client.flow
             flow = client.flow_from_clientsecrets(self._CLIENT_SECRET_FILE, self._SCOPES)
             flow.user_agent = self._APPLICATION_NAME
             credentials = tools.run_flow(flow, store)
