@@ -27,6 +27,6 @@ First activate virtualenv by running:
 
  Balances fetcher works for following currencies:
  
- BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT, SNT, STORJ, SONM
+ BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT, SNT, STORJ, SONM, CVC, STARTA
  - Poloniex
  - Kraken
