@@ -19,6 +19,7 @@ class EtherscanAPI(Fetcher):
         'REP': 18,
         'SNM': 18,
         'SNT': 18,
+        'CVC': 8,
     }
 
     _contracts = {
@@ -33,7 +34,7 @@ class EtherscanAPI(Fetcher):
         'SNT': '0x744d70FDBE2Ba4CF95131626614a1763DF805B9E',
         'BAT': '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
         'SNM': '0x983F6d60db79ea8cA4eB9968C6aFf8cfA04B3c63',
-
+        'CVC': '0x41e5560054824ea6b0732e656e3ad64e20e94e45',
     }
 
     _URL = 'https://api.etherscan.io/api?'
