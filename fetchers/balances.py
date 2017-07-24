@@ -2,6 +2,7 @@ import asyncio
 
 from models.etherscan import EtherscanAPI
 from models.blockchaininfo import BlockChainInfoAPI
+from models.btc import BtcAPI
 from models.etcchain import EtcChainAPI
 from models.waves import WavesAPI
 from models.poloniex import PoloniexAPI
@@ -14,7 +15,8 @@ from models.ripple import RippleAPI
 from models.maidcoin import MaidCoinAPI
 
 ethAPI = EtherscanAPI()
-btcAPI = BlockChainInfoAPI()
+# btcAPI = BlockChainInfoAPI()
+btcAPI = BtcAPI()
 etcAPI = EtcChainAPI()
 wavesAPI = WavesAPI()
 gameCreditsAPI = GameCreditsAPI()
