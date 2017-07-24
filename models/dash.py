@@ -1,7 +1,10 @@
 import aiohttp
 import json
+import logging
 
 from .fetcher import Fetcher
+
+logger = logging.getLogger(__name__)
 
 
 class DashAPI(Fetcher):
@@ -22,9 +25,9 @@ class DashAPI(Fetcher):
             except TypeError as _:
                 try:
                     err_mess = response.get("error")
-                    print(err_mess)
+                    logger.error("No balance:", err_mess)
                 except Exception as _:
-                    print("Something strange happened with Dash API.")
+                    logger.error("Something strange happened with Dash API.")
             if callback is not None:
                 callback(symbol, balance)
         return symbol, balance

@@ -1,16 +1,15 @@
 import httplib2
-import os
+import logging
 
 from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
+
+logger = logging.getLogger(__name__)
 
 
 class SheetsAPI:
 
     _SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-    _CLIENT_SECRET_FILE = 'configs/client_secret.json'
+    _CLIENT_SECRET_FILE = 'config/client_secret.json'
     _DISCOVERY_URL = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
     _PRICES_SHEET_NAME = 'Prices'
     _BALANCES_SHEET_NAME = 'Balances'
@@ -35,44 +34,23 @@ class SheetsAPI:
         _DAILY_PERFORMANCE_SHEET_NAME: 3
     }
 
-    def __init__(self, sheets_id, app_name='Assets Parser', secret_file=None):
+    def __init__(self, config):
 
-        self._SHEETS_ID = sheets_id
-        if secret_file is not None:
-            self._CLIENT_SECRET_FILE = secret_file
-        self._APPLICATION_NAME = app_name
-        self._credentials = self._get_credentials()
+        self._SHEET_ID = config['sheet_id']
+        self._config = config
+        self._credentials = self._get_credentials(config)
         http = self._credentials.authorize(httplib2.Http())
         self._service = discovery.build('sheets', 'v4', http=http,
                                         discoveryServiceUrl=self._DISCOVERY_URL, cache_discovery=False)
 
-    def _get_credentials(self):
-        """Gets valid user credentials from storage.
-
-        If nothing has been stored, or if the stored credentials are invalid,
-        the OAuth2 flow is completed to obtain the new credentials.
-
-        Returns:
-            Credentials, the obtained credential.
-        """
-        home_dir = os.path.expanduser('~')
-        credential_dir = os.path.join(home_dir, '.credentials')
-        if not os.path.exists(credential_dir):
-            os.makedirs(credential_dir)
-        credential_path = os.path.join(credential_dir, 'sheets.googleapis.com-python-assets_parser.json')
-
-        store = Storage(credential_path)
-        credentials = store.get()
-        if not credentials or credentials.invalid:
-            flow = client.flow_from_clientsecrets(self._CLIENT_SECRET_FILE, self._SCOPES)
-            flow.user_agent = self._APPLICATION_NAME
-            credentials = tools.run_flow(flow, store)
-            print('Storing credentials to ' + credential_path)
+    def _get_credentials(self, config):
+        from oauth2client.service_account import ServiceAccountCredentials
+        credentials = ServiceAccountCredentials.from_json_keyfile_dict(config, scopes=self._SCOPES)
         return credentials
 
     def _read_assets(self, page):
         result = self._service.spreadsheets().values().get(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{}!B1:2'.format(page)
         ).execute()
         values = result.get('values', [[], []])
@@ -86,7 +64,7 @@ class SheetsAPI:
 
     def read_addresses(self):
         result = self._service.spreadsheets().values().get(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{0}!A{1}:C'.format(self._ADDRESSES_SHEET_NAME, self._title_height[self._ADDRESSES_SHEET_NAME] + 1)
         ).execute()
         values = result.get('values', [[], [], []])
@@ -94,7 +72,7 @@ class SheetsAPI:
 
     def read_last_prices(self):
         result = self._service.spreadsheets().values().get(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{}!B1:3'.format(self._PRICES_SHEET_NAME)
         ).execute()
         values = result.get('values', [[], [], []])
@@ -108,7 +86,7 @@ class SheetsAPI:
 
     def _add_rows(self, rows, page, inputOption='RAW'):
         result = self._service.spreadsheets().batchUpdate(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             body={
                 'requests': [
                     {
@@ -124,14 +102,14 @@ class SheetsAPI:
                 ]
             }
         ).execute()
-        print(result)
+        logger.debug(result)
         result = self._service.spreadsheets().values().append(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{}!A1:1'.format(page),
             body={'range': '{}!A1:1'.format(page), 'majorDimension': 'ROWS', 'values': rows},
             valueInputOption=inputOption
         ).execute()
-        print(result)
+        logger.debug(result)
 
     def add_balances_row(self, row):
         self._add_rows([row], self._BALANCES_SHEET_NAME)
@@ -151,14 +129,14 @@ class SheetsAPI:
 
     def get_latest_token_supply(self):
         result = self._service.spreadsheets().values().get(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{}!B4'.format(self._DAILY_PERFORMANCE_SHEET_NAME)
         ).execute()
         return float(result.get('values', [[]])[0][0])
 
     def get_latest_token_prices(self):
         result = self._service.spreadsheets().values().get(
-            spreadsheetId=self._SHEETS_ID,
+            spreadsheetId=self._SHEET_ID,
             range='{0}!{1}:{1}'.format(self._DAILY_PERFORMANCE_SHEET_NAME,
                                        self._title_height[self._DAILY_PERFORMANCE_SHEET_NAME] + 1)
         ).execute()

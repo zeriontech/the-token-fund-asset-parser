@@ -6,11 +6,13 @@ import yaml
 import json
 import bugsnag
 import os
+import logging
 from bugsnag.tornado import BugsnagRequestHandler
 from update_table import update_table
 from fetchers.token import fetch_token_supply
 from fetchers.portfolio import fetch_portfolio
 
+logger = logging.getLogger(__name__)
 
 class BaseHandler(BugsnagRequestHandler):
     config = None
@@ -33,8 +35,10 @@ class BaseHandler(BugsnagRequestHandler):
             self.set_status(500)
             bugsnag.notify(e)
             self.write(json.dumps({'status': 'ERROR',
-                                   'data': e,
+                                   'data': str(e),
                                    }, indent=4))
+            import traceback
+            logger.error(traceback.format_exc())
 
 
 class UpdateTableHandler(BaseHandler):
@@ -48,7 +52,7 @@ class FetchTokenHandler(BaseHandler):
         from fetchers.prices import fetch_prices
         from fetchers.balances import fetch_balances
 
-        api = SheetsAPI(sheets_id=_config['sheets']['id'], secret_file=_config['sheets']['secret_file'])
+        api = SheetsAPI(_config['sheets'])
 
         wallet = api.read_addresses()
         balances = fetch_balances(config, wallet)
@@ -79,12 +83,16 @@ def make_app(config):
 
 if __name__ == "__main__":
     tornado.options.define(name='config',
-                           default='configs/main.yml',
+                           default=None,
                            type=str,
                            help='Path to YAML config file')
     tornado.options.parse_command_line()
 
-    config = yaml.load(open(tornado.options.options['config']))
+    if tornado.options.options['config'] is not None:
+        config = yaml.load(open(tornado.options.options['config']))
+    else:
+        from config.env import config_from_env
+        config = config_from_env()
 
     bugsnag.configure(
         api_key=config['bugsnag']['api_key'],

@@ -1,7 +1,10 @@
 import aiohttp
 import json
+import logging
 
 from .fetcher import Fetcher
+
+logger = logging.getLogger(__name__)
 
 
 class EtherscanAPI(Fetcher):
@@ -68,7 +71,13 @@ class EtherscanAPI(Fetcher):
                 callback(token, amount)
             return token, amount
 
-    async def get_tokens_balance_by_address(self, loop, address, token, contract_address=None, decimals=None, callback=None):
+    async def get_tokens_balance_by_address(self,
+                                            loop,
+                                            address,
+                                            token,
+                                            contract_address=None,
+                                            decimals=None,
+                                            callback=None):
         if address is None:
             raise ValueError("address must be specified")
         if decimals is None:
@@ -82,7 +91,7 @@ class EtherscanAPI(Fetcher):
             response = json.loads(response)
             message = response.get('message')
             if message == 'NOTOK':
-                print("{} doesn't exist".format(token))
+                logger.error("{} doesn't exist".format(token))
                 return
             amount = float(response.get('result')) / (10 ** decimals)
             if callback is not None:
@@ -96,7 +105,7 @@ class EtherscanAPI(Fetcher):
             response = json.loads(response)
             message = response.get('message')
             if message == 'NOTOK':
-                print("can't read total supply from contract {}".format(contract_address))
+                logger.error("Can't read total supply from contract {}".format(contract_address))
                 return
             amount = float(response.get('result'))
             callback(amount)

@@ -3,9 +3,9 @@
 Requires authorisation via etherionlab@gmail.com
 
 ## Config
-Default config path is `configs/main.yml`
+App can be configured using environment variables or using yaml config file and `--config` command line option 
 
-You need to fill config file with your credentials information. For example see [example.yml](configs/example.yml)
+You need to fill config file your credentials information. For example see [example.yml](config/example.yml)
 
 
 ## Server endpoints

@@ -1,7 +1,10 @@
 import aiohttp
 import json
+import logging
 
 from .fetcher import Fetcher
+
+logger = logging.getLogger(__name__)
 
 
 class ZCashAPI(Fetcher):
@@ -19,7 +22,7 @@ class ZCashAPI(Fetcher):
             try:
                 balance = float(response.get("balance", -1))
             except AttributeError as _:
-                print("You provided wrong address!")
+                logger.error("Wrong address provided")
             if callback is not None:
                 callback(symbol, balance)
         return symbol, balance

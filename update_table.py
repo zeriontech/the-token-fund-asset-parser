@@ -1,3 +1,5 @@
+import logging
+
 from datetime import datetime
 
 from fetchers.balances import fetch_balances
@@ -5,6 +7,8 @@ from fetchers.prices import fetch_prices
 from fetchers.portfolio import fetch_portfolio
 from fetchers.token import fetch_token_supply
 from models.google_sheets_api import SheetsAPI
+
+logger = logging.getLogger(__name__)
 
 
 def update_balances(api, config, date):
@@ -31,8 +35,7 @@ def update_prices(api, date):
 
     for asset_name, asset_symbol in zip(prices_assets[0], prices_assets[1]):
         if asset_symbol not in prices.keys():
-            # TODO: log unfetched price
-            print('Warning: price of {} is not fetched'.format(asset_symbol))
+            logger.warning('Warning: price of {} is not fetched'.format(asset_symbol))
             prices[asset_symbol] = last_prices.get(asset_symbol)
         price = prices.get(asset_symbol)
         currency = asset_name.split()[-1].replace('(', '').replace(')', '')
@@ -107,7 +110,7 @@ def update_daily_performance(api, date, portfolio):
 
 
 def update_table(config):
-    api = SheetsAPI(sheets_id=config['sheets']['id'], secret_file=config['sheets']['secret_file'])
+    api = SheetsAPI(config['sheets'])
     date = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
     balances = update_balances(api, config, date)
 
@@ -122,7 +125,7 @@ if __name__ == "__main__":
     import yaml
 
     tornado.options.define(name='config',
-                           default='configs/main.yml',
+                           default='config/main.yml',
                            type=str,
                            help='Path to YAML config file')
     tornado.options.parse_command_line()

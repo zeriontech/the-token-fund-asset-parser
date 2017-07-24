@@ -1,0 +1,25 @@
+kraken:
+    secret: "put your kraken secret here" # KRAKEN_SECRET
+    key: "put your kraken key here" # KRAKEN_KEY
+poloniex:
+    secret: "put your poloniex secret here" # POLONIEX_SECRET
+    key: "put your poloniex key here" # POLONIEX_key
+bitstamp:
+    secret: "put your bitstamp secret here" # BITSTAMP_SECRET
+    key: "put your bitstamp key here" # BITSTAMP_KEY
+    customer_id: "put your bitstamp customer id here" # BITSTAMP_CUSTOMER_ID
+bugsnag:
+    api_key: 'bugsnag api key here' # BUGSNAG_API_KEY
+sheets:
+    sheet_id: 'your google sheet id' # SHEETS_SHEET_ID
+    # Google API service account key data (from json)
+    auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs # SHEETS_AUTH_PROVIDER_X509_CERT_URL
+    auth_uri: https://accounts.google.com/o/oauth2/auth # SHEETS_AUTH_URI
+    token_uri: https://accounts.google.com/o/oauth2/token # SHEETS_TOKEN_URI
+    type: service_account # SHEETS_TYPE
+    client_email: '' # SHEETS_CLIENT_EMAIL
+    client_id: '' # SHEETS_CLIENT_ID
+    client_x509_cert_url: '' # SHEETS_CLIENT_X509_CERT_URL
+    private_key: '' # SHEETS_PRIVATE_KEY
+    private_key_id: '' # SHEETS_PRIVATE_KEY_ID
+    project_id: '' # SHEETS_PROJECT_ID
