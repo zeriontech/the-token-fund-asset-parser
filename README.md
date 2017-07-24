@@ -12,7 +12,10 @@ You need to fill config file with your credentials information. For example see 
 * `/update_table`: updates the google sheet with actual information on balances, prices, etc.
     Returns JSON `{"status": "OK", "data": none}` on success
 
-* `/token_price`: fetches the actual token price. Returns JSON `{"USD": 12.3, "BTC": 32.1, "ETH": 21.3, "token_supply": 1234"}` on success
+* `/token_price`: fetches the actual token price. Returns JSON `{"USD": 12.3, "BTC": 32.1, "ETH": 21.3, "token_supply": 1234", "balances": {
+      "ETH": 1631.0246158715327,
+      "EXP": 0.0,
+      "BAT": 213217.96720379 }}` on success
 
 
 ## Scripts

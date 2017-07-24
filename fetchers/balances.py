@@ -34,6 +34,7 @@ balance_apis = {
     'XRP': rippleAPI.get_ripple_balance,
     'DASH': dashAPI.get_dash_balance,
     'MAID': maidAPI.get_maid_balance,
+    'STA': wavesAPI.get_token_balance,
 }
 
 

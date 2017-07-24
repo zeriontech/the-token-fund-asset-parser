@@ -65,7 +65,8 @@ class FetchTokenHandler(BaseHandler):
             'USD': sum([value.get('USD') for value in portfolio.values()]) / token_supply,
             'BTC': sum([value.get('BTC') for value in portfolio.values()]) / token_supply,
             'ETH': sum([value.get('ETH') for value in portfolio.values()]) / token_supply,
-            'token_supply': token_supply
+            'token_supply': token_supply,
+            'balances': balances
         }
         return portfolio_value
 
