@@ -41,5 +41,5 @@ def _fill_structure(d):
 def config_from_env():
     config = _fill_structure(STRUCTURE)
 
-    logger.critical(str(config))
+    logger.debug(str(config))
     return config
