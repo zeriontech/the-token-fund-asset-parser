@@ -11,7 +11,8 @@ def fetch_portfolio(balances=None, prices=None):
             portfolio[symbol] = {
                 'USD': balances.get(symbol) * float(prices.get(symbol).get('USD')),
                 'BTC': balances.get(symbol) * float(prices.get(symbol).get('BTC')),
-                'ETH': balances.get(symbol) * float(prices.get(symbol).get('BTC')) / float(prices.get('ETH').get('BTC')),
+                'ETH': balances.get(symbol) * float(prices.get(symbol).get('BTC')) / float(
+                    prices.get('ETH').get('BTC')),
                 'share': balances.get(symbol) * float(prices.get(symbol).get('USD')) / whole_usd_price,
             }
     return portfolio

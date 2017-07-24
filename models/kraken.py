@@ -11,7 +11,6 @@ from .fetcher import Fetcher
 
 
 class KrakenAPI(Fetcher):
-
     _URL = 'https://api.kraken.com'
     _KEY = None
     _SECRET = None
@@ -46,16 +45,20 @@ class KrakenAPI(Fetcher):
             }
 
             response = await self._fetch_post(session=session, url=self._URL + urlpath, data=data, headers=headers)
-            if response is None: raise Exception('kraken didn\'t response')
+            if response is None:
+                raise Exception('kraken didn\'t response')
             result = json.loads(response).get('result', {})
             if callback is not None:
                 callback(result)
             balances = []
             for symbol in symbols:
                 prefix = 'Z' if symbol == 'EUR' or symbol == 'USD' else 'X'
-                if symbol == 'BTC': symbol = 'XBT'
-                if symbol == 'EOS': prefix = ''  # no idea why EOS doesn't have 'X' prefix
+                if symbol == 'BTC':
+                    symbol = 'XBT'
+                if symbol == 'EOS':
+                    prefix = ''  # no idea why EOS doesn't have 'X' prefix
                 balance = float(result.get(prefix + symbol, '0.0'))
-                if symbol == 'XBT': symbol = 'BTC'
+                if symbol == 'XBT':
+                    symbol = 'BTC'
                 balances.append((symbol, balance))
             return balances

@@ -5,7 +5,6 @@ from .fetcher import Fetcher
 
 
 class RippleAPI(Fetcher):
-
     _URL = 'https://data.ripple.com/v2/accounts/{}/balances?currency=XRP'
 
     async def get_ripple_balance(self, loop, address, symbol='XRP', callback=None):

@@ -23,7 +23,8 @@ class Fetcher(object):
                 with async_timeout.timeout(10):
                     async with session.post(url, data=data, headers=headers) as response:
                         result = await response.text()
-                        if result is None: raise Exception()
+                        if result is None:
+                            raise Exception()
                         return result
             except:
                 asyncio.sleep(1)

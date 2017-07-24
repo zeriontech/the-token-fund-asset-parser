@@ -1,5 +1,4 @@
 import aiohttp
-import asyncio
 import json
 
 from .fetcher import Fetcher
@@ -37,7 +36,8 @@ class CoinmarketcapAPI(Fetcher):
                             asset.get("symbol"),
                             asset.get("price_usd"),
                             asset.get("price_btc"),
-                            int(asset.get("last_updated", -1)) or -1) for asset in ticker if asset.get("symbol") in assets]
+                            int(asset.get("last_updated", -1)) or -1)
+                      for asset in ticker if asset.get("symbol") in assets]
             if callback is not None:
                 callback(prices)
         return prices

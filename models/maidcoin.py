@@ -4,7 +4,6 @@ from .fetcher import Fetcher
 
 
 class MaidCoinAPI(Fetcher):
-
     _URL = 'http://omniexplorer.info/ask.aspx?api=getbalance&prop=3&address={}'
 
     async def get_maid_balance(self, loop, address, symbol='MAID', callback=None):
