@@ -30,3 +30,4 @@ First activate virtualenv by running:
  BTC, ETH, ETC, ICONOMI, GOLEM, MLN, HMQ, LH, REP, WAVES, GAME, ANT, BCAP, BAT, SNT, STORJ, SONM, CVC, STARTA
  - Poloniex
  - Kraken
+ - Bitstamp

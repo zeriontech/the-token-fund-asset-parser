@@ -7,6 +7,7 @@ from models.etcchain import EtcChainAPI
 from models.waves import WavesAPI
 from models.poloniex import PoloniexAPI
 from models.kraken import KrakenAPI
+from models.bitstamp import BitstampAPI
 from models.litecoin import LitecoinAPI
 from models.zcash import ZCashAPI
 from models.gamecredits import GameCreditsAPI
@@ -49,11 +50,23 @@ def replace(symbol):
 
 
 def fetch_balances(config, wallet):
-    poloniexAPI = PoloniexAPI(key=config['poloniex']['key'], secret=config['poloniex']['secret'])
-    krakenAPI = KrakenAPI(key=config['kraken']['key'], secret=config['kraken']['secret'])
+    poloniex_api = PoloniexAPI(
+        key=config['poloniex']['key'],
+        secret=config['poloniex']['secret']
+    )
+    kraken_api = KrakenAPI(
+        key=config['kraken']['key'],
+        secret=config['kraken']['secret']
+    )
+    bitstamp_api = BitstampAPI(
+        customer_id=config['bitstamp']['customer_id'],
+        key=config['bitstamp']['key'],
+        secret=config['bitstamp']['secret']
+    )
 
     poloniex_assets = set()
     kraken_assets = set()
+    bitstamp_assets = set()
 
     balances = {}
 
@@ -70,18 +83,23 @@ def fetch_balances(config, wallet):
         if place == "Kraken":
             kraken_assets.add(symbol)
             continue
-        else:
+        if place == "Bitstamp":
+            bitstamp_assets.add(symbol)
+            continue
+        if place == "Address":
             balance_func = balance_apis.get(symbol, ethAPI.get_balance)
             future = balance_func(loop, address, symbol)
-        asset_futures.append(future)
+            asset_futures.append(future)
+            continue
+        print('Unknown place!')
 
-    asset_futures.append(poloniexAPI.get_balances(loop, poloniex_assets))
-    asset_futures.append(krakenAPI.get_balances(loop, kraken_assets))
+    asset_futures.append(poloniex_api.get_balances(loop, poloniex_assets))
+    asset_futures.append(kraken_api.get_balances(loop, kraken_assets))
+    asset_futures.append(bitstamp_api.get_balances(loop, bitstamp_assets))
 
     results = loop.run_until_complete(asyncio.gather(*asset_futures))
 
     # here all async requests already finished
-
     for result in results:
         if type(result) is list:
             for balance in result:
