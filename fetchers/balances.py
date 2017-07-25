@@ -100,7 +100,6 @@ def fetch_balances(config, wallet):
     results = loop.run_until_complete(asyncio.gather(*asset_futures))
 
     # here all async requests already finished
-
     for result in results:
         if type(result) is list:
             for balance in result:

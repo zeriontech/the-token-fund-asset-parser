@@ -1,4 +1,5 @@
 import aiohttp
+import binascii
 from time import time
 import json
 from hashlib import sha256
@@ -22,27 +23,26 @@ class BitstampAPI(Fetcher):
         self._CUSTOMER_ID = customer_id
 
     def _signature(self, nonce):
-        message = nonce + self._CUSTOMER_ID + self._KEY
+        message = str(nonce) + self._CUSTOMER_ID + self._KEY
         return hmac.new(
-            self._SECRET,
-            msg=message,
+            key=self._SECRET.encode(),
+            msg=message.encode(),
             digestmod=sha256
         ).hexdigest().upper()
 
     async def get_balances(self, loop, symbols, callback=None):
         async with aiohttp.ClientSession(loop=loop) as session:
-            endpoint = self._URL + 'balance'
             nonce = int(time())
-            data = {
+            endpoint = self._URL + 'balance/'
+            params = {
                 'key': self._KEY,
                 'signature': self._signature(nonce),
-                "nonce": nonce
+                'nonce': nonce
             }
-
-            _response = await self._fetch_post(session=session, url=endpoint, data=data)
+            _response = await self._fetch_post(session=session, url=endpoint, data=params)
             if _response is None:
                 raise Exception('bitstamp didn\'t response')
             response = json.loads(_response)
             if callback is not None:
                 callback(response)
-            return [response.get(symbol.lower(), 0) for symbol in symbols]
+            return [(symbol, float(response.get(symbol.lower() + '_balance', 0))) for symbol in symbols]
