@@ -108,7 +108,7 @@ def update_daily_performance(api, date, portfolio):
 
 def update_table(config):
     api = SheetsAPI(sheets_id=config['sheets']['id'], secret_file=config['sheets']['secret_file'])
-    date = datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
+    date = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
     balances = update_balances(api, config, date)
 
     prices = update_prices(api, date)
