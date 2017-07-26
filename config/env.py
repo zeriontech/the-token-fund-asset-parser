@@ -15,6 +15,11 @@ STRUCTURE = {
         'key': 'POLONIEX_KEY',
         'secret': 'POLONIEX_SECRET',
     },
+    'bitstamp': {
+        'key': 'BITSTAMP_KEY',
+        'secret': 'BITSTAMP_SECRET',
+        'customer_id': 'BITSTAMP_CUSTOMER_ID',
+    },
     'sheets': {
         'auth_provider_x509_cert_url': 'SHEETS_AUTH_PROVIDER_X509_CERT_URL',
         'auth_uri': 'SHEETS_AUTH_URI',
@@ -43,3 +48,4 @@ def config_from_env():
 
     logger.debug(str(config))
     return config
+
