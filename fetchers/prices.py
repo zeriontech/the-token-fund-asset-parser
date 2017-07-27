@@ -28,4 +28,5 @@ def fetch_prices(assets):
         if asset.symbol in assets:
             prices[asset.symbol] = {'USD': asset.price_USD, 'BTC': asset.price_BTC}
     prices['EUR'] = {'USD': float(euro_price), 'BTC': float(euro_price) / prices.get('BTC').get('USD')}
+    prices['USD'] = {'USD': 1.0, 'BTC': 1.0 / prices.get('BTC').get('USD')}
     return prices
