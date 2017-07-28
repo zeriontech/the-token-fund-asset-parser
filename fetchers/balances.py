@@ -14,6 +14,7 @@ from models.gamecredits import GameCreditsAPI
 from models.dash import DashAPI
 from models.ripple import RippleAPI
 from models.maidcoin import MaidCoinAPI
+from models.byteball import ByteballAPI
 
 ethAPI = EtherscanAPI()
 # btcAPI = BlockChainInfoAPI()
@@ -26,6 +27,7 @@ zcashAPI = ZCashAPI()
 rippleAPI = RippleAPI()
 dashAPI = DashAPI()
 maidAPI = MaidCoinAPI()
+byteballAPI = ByteballAPI()
 
 balance_apis = {
     'BTC': btcAPI.get_btc_balance,
@@ -38,6 +40,7 @@ balance_apis = {
     'DASH': dashAPI.get_dash_balance,
     'MAID': maidAPI.get_maid_balance,
     'STA': wavesAPI.get_token_balance,
+    'GBYTE': byteballAPI.get_balance,
 }
 
 
