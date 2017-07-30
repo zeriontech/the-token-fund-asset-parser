@@ -13,3 +13,6 @@ sheets:
     secret_file: 'configs/client_secret.json'
 bugsnag:
     api_key: 'bugsnag api key here'
+    stage: 'development'
+server:
+    port: 8889

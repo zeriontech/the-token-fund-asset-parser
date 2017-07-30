@@ -89,7 +89,8 @@ if __name__ == "__main__":
     bugsnag.configure(
         api_key=config['bugsnag']['api_key'],
         project_root=os.getcwd(),
+        release_stage=config['bugsnag']['stage']
     )
     app = make_app(config)
-    app.listen(8888, '0.0.0.0')
+    app.listen(config['server']['port'], '0.0.0.0')
     tornado.ioloop.IOLoop.current().start()
