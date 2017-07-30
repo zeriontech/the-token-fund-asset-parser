@@ -4,3 +4,4 @@ asyncio
 google-api-python-client
 bugsnag
 pyyaml
+socketio-client
