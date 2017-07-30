@@ -1,16 +1,12 @@
 import socketIO_client
-import json
 import logging
-
-from requests.exceptions import ConnectionError
-
-from .fetcher import Fetcher
 
 logger = logging.getLogger(__name__)
 
+
 class ByteballAPI:
     _decimals = {
-    "GBYTE" : 9
+        "GBYTE": 9
     }
 
     _URL = "https://explorer.byteball.org"
@@ -32,7 +28,7 @@ class ByteballAPI:
                     raise TimeoutError
             except Exception as e:
                 logger.error('Could not fetch byteball balance:', e)
-                return
+                return token, 0
         response = await future
         decimals = self._decimals.get(token, 0)
         amount = float(response.get('objBalance').get('bytes')) / (10 ** decimals)
