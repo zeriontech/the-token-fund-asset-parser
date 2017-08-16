@@ -23,6 +23,8 @@ def fetch_prices(assets):
     for asset in _prices:
         if asset.name == 'BatCoin':
             continue  # Bad coin
+        if asset.name == 'iCoin':
+            continue  # to avoid colision with Iconomi
         if asset.symbol == 'TIME':
             asset.symbol = 'LH'
         if asset.symbol in assets:
