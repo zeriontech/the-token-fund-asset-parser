@@ -15,6 +15,7 @@ from models.dash import DashAPI
 from models.ripple import RippleAPI
 from models.maidcoin import MaidCoinAPI
 from models.byteball import ByteballAPI
+from models.nem import NemAPI
 
 ethAPI = EtherscanAPI()
 # btcAPI = BlockChainInfoAPI()
@@ -28,6 +29,7 @@ rippleAPI = RippleAPI()
 dashAPI = DashAPI()
 maidAPI = MaidCoinAPI()
 byteballAPI = ByteballAPI()
+nemAPI = NemAPI()
 
 balance_apis = {
     'BTC': btcAPI.get_btc_balance,
@@ -41,6 +43,7 @@ balance_apis = {
     'MAID': maidAPI.get_maid_balance,
     'STA': wavesAPI.get_token_balance,
     'GBYTE': byteballAPI.get_balance,
+    'XEM': nemAPI.get_nem_balance,
 }
 
 
