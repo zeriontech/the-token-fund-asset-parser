@@ -6,7 +6,7 @@ from .fetcher import Fetcher
 
 class NemAPI(Fetcher):
 
-    _URL = 'http://chain.nem.ninja/api3/account?address={}'
+    _URL = 'http://62.75.251.134:7890/account/get?address={}'
 
     _decimals = {
         'XEM': 6
@@ -22,8 +22,7 @@ class NemAPI(Fetcher):
 
             balance = 0
             try:
-                for _balance in response.get("raw").get('balance'):
-                    balance += _balance.get('sum', 0)
+                balance = response.get('account').get('balance')
             except TypeError as _:
                 print(response.get("error", 'Unknown NEM API error'))
             if callback is not None:

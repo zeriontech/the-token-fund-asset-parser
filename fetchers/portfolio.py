@@ -7,7 +7,7 @@ def fetch_portfolio(balances=None, prices=None):
 
     portfolio = {}
     for symbol in balances.keys():
-        if balances.get(symbol, 0) > 0:
+        if balances.get(symbol, 0) > 0 and prices.get(symbol):
             portfolio[symbol] = {
                 'USD': balances.get(symbol) * float(prices.get(symbol).get('USD')),
                 'BTC': balances.get(symbol) * float(prices.get(symbol).get('BTC')),
