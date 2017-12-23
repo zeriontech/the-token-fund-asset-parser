@@ -14,9 +14,13 @@ class BtcAPI(Fetcher):
         async with aiohttp.ClientSession(loop=loop) as session:
             endpoint = self._URL.format(address)
             response = await self._fetch(session, endpoint)
-            response = json.loads(response)
-
-            balance = sum([utxo['amount'] for utxo in response])
+            balance = 0
+            if response is not None:
+                try:
+                    response = json.loads(response)
+                    balance = sum([utxo['amount'] for utxo in response])
+                except Exception:
+                    pass
             if callback is not None:
                 callback(symbol, balance)
         return symbol, balance

@@ -46,8 +46,14 @@ class KrakenAPI(Fetcher):
             }
 
             response = await self._fetch_post(session=session, url=self._URL + urlpath, data=data, headers=headers)
-            if response is None: raise Exception('kraken didn\'t response')
-            result = json.loads(response).get('result', {})
+            if response is None:
+                print('kraken didn\'t respond')
+                return []
+            try:            
+                result = json.loads(response).get('result', {})
+            except Exception:
+                print('Kraken didn\'t respond')
+                return []
             if callback is not None:
                 callback(result)
             balances = []

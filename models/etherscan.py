@@ -1,6 +1,7 @@
 import aiohttp
 import json
 
+from time import sleep
 from .fetcher import Fetcher
 
 
@@ -45,15 +46,21 @@ class EtherscanAPI(Fetcher):
         'PAY': '0xB97048628DB6B661D4C2aA833e95Dbe1A905B280'
     }
 
-    _URL = 'https://api.etherscan.io/api?'
+    _URL = 'https://api.etherscan.io/api?apikey=YDXSHGZR3X169ZVGGEXKDPDBEUKAT5MJW2&'
 
     async def get_ether_balance(self, loop, address, callback=None):
         if address is None:
             raise ValueError("address must be specified")
         async with aiohttp.ClientSession(loop=loop) as session:
             endpoint = self._URL + "module=account&action=balance&address={}".format(address)
-            response = await self._fetch(session, endpoint)
-            response = json.loads(response).get('result')
+            response = 0
+            for i in range(5):
+                response = await self._fetch(session, endpoint)
+                try:
+                    response = json.loads(response).get('result')
+                    break
+                except Exception:
+                    sleep(1)
             amount = float(response) / 10 ** 18  # from wei to ETH
             if callback is not None:
                 callback('ETH', amount)
@@ -86,12 +93,21 @@ class EtherscanAPI(Fetcher):
         async with aiohttp.ClientSession(loop=loop) as session:
             endpoint = self._URL + "module=account&action=tokenbalance&contractaddress={}&address={}".format(
                 contract_address, address)
-            response = await self._fetch(session, endpoint)
-            response = json.loads(response)
+            response = {}
+            for i in range(5):
+                response = await self._fetch(session, endpoint)
+                try:
+                    response = json.loads(response)
+                    break
+                except Exception:
+                    sleep(1)
             message = response.get('message')
             if message == 'NOTOK':
                 print("{} doesn't exist".format(token))
                 return
+            if response.get('result') is None:
+                print('Etherscan didn\'t return the balance for', token)
+                return token, 0
             amount = float(response.get('result')) / (10 ** decimals)
             if callback is not None:
                 callback(token, amount)
