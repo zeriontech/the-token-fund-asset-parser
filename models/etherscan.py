@@ -24,7 +24,9 @@ class EtherscanAPI(Fetcher):
         'AE': 18,
         'QTUM': 18,
         'OMG': 18,
-        'PAY': 18
+        'PAY': 18,
+        'REQ': 18,
+        'CND': 18
     }
 
     _contracts = {
@@ -43,7 +45,9 @@ class EtherscanAPI(Fetcher):
         'AE': '0x5ca9a71b1d01849c0a95490cc00559717fcf0d1d',
         'QTUM': '0x9a642d6b3368ddc662CA244bAdf32cDA716005BC',
         'OMG': '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
-        'PAY': '0xB97048628DB6B661D4C2aA833e95Dbe1A905B280'
+        'PAY': '0xB97048628DB6B661D4C2aA833e95Dbe1A905B280',
+        'REQ': '0x8f8221afbb33998d8584a2b05749ba73c37a938a',
+        'CND': '0xd4c435f5b09f855c3317c8524cb1f586e42795fa',
     }
 
     _URL = 'https://api.etherscan.io/api?apikey=YDXSHGZR3X169ZVGGEXKDPDBEUKAT5MJW2&'
