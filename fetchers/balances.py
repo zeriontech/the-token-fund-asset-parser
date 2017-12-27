@@ -18,8 +18,8 @@ from models.byteball import ByteballAPI
 from models.nem import NemAPI
 
 ethAPI = EtherscanAPI()
-# btcAPI = BlockChainInfoAPI()
-btcAPI = BtcAPI()
+btcAPI = BlockChainInfoAPI()
+#  btcAPI = BtcAPI()
 etcAPI = EtcChainAPI()
 wavesAPI = WavesAPI()
 gameCreditsAPI = GameCreditsAPI()
