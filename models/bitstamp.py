@@ -10,7 +10,7 @@ from .fetcher import Fetcher
 
 class BitstampAPI(Fetcher):
 
-    _URL = 'https://www.bitstamp.net/api/'
+    _URL = 'https://www.bitstamp.net/api/v2/'
     _KEY = None
     _SECRET = None
     _CUSTOMER_ID = None
@@ -43,6 +43,7 @@ class BitstampAPI(Fetcher):
             if _response is None:
                 raise Exception('bitstamp didn\'t response')
             response = json.loads(_response)
+            balances = [(symbol, float(response.get(symbol.lower() + '_balance', 0))) for symbol in symbols]
             if callback is not None:
-                callback(response)
-            return [(symbol, float(response.get(symbol.lower() + '_balance', 0))) for symbol in symbols]
+                callback(balances)
+            return balances
