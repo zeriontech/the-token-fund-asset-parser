@@ -11,6 +11,9 @@ bitstamp:
 binance:
     secret: "put your binance secret here"
     key: "put your binance key here"
+bittrex:
+    secret: "put your bittrex secret here"
+    key: "put your bittrex key here"
 sheets:
     id: 'your google sheets id'
     secret_file: 'configs/client_secret.json'

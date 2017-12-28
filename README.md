@@ -23,7 +23,7 @@ You need to fill config file with your credentials information. For example see 
 First activate virtualenv by running:
 `source env/bin/activate`
 
-`python3 update_table_py` - updates prices, balances and portfolio of the fund.
+`python3 update_table.py` - updates prices, balances and portfolio of the fund.
 
  Balances fetcher works for following currencies:
  

@@ -117,6 +117,7 @@ def update_table(config):
 
     update_daily_performance(api, date, portfolio)
 
+
 if __name__ == "__main__":
     import tornado.options
     import yaml

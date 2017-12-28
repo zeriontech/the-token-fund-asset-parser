@@ -9,6 +9,7 @@ from models.poloniex import PoloniexAPI
 from models.kraken import KrakenAPI
 from models.bitstamp import BitstampAPI
 from models.binance import BinanceAPI
+from models.bittrex import BittrexAPI
 from models.litecoin import LitecoinAPI
 from models.zcash import ZCashAPI
 from models.gamecredits import GameCreditsAPI
@@ -74,11 +75,16 @@ def fetch_balances(config, wallet):
         key=config['binance']['key'],
         secret=config['binance']['secret']
     )
+    bittrex_api = BittrexAPI(
+        key=config['bittrex']['key'],
+        secret=config['bittrex']['secret']
+    )
 
     poloniex_assets = set()
     kraken_assets = set()
     bitstamp_assets = set()
     binance_assets = set()
+    bittrex_assets = set()
 
     balances = {}
 
@@ -101,6 +107,9 @@ def fetch_balances(config, wallet):
         if place == "Binance":
             binance_assets.add(symbol)
             continue
+        if place == 'Bittrex':
+            bittrex_assets.add(symbol)
+            continue
         if place == "Address":
             balance_func = balance_apis.get(symbol, ethAPI.get_balance)
             future = balance_func(loop, address, symbol)
@@ -112,6 +121,7 @@ def fetch_balances(config, wallet):
     asset_futures.append(kraken_api.get_balances(loop, kraken_assets))
     asset_futures.append(bitstamp_api.get_balances(loop, bitstamp_assets))
     asset_futures.append(binance_api.get_balances(loop, binance_assets))
+    asset_futures.append(bittrex_api.get_balances(loop, bittrex_assets))
 
     results = loop.run_until_complete(asyncio.gather(*asset_futures))
 
