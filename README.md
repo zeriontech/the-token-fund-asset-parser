@@ -32,3 +32,4 @@ First activate virtualenv by running:
  - Kraken
  - Bitstamp
  - Binance
+ - Bittrex
