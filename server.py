@@ -77,6 +77,7 @@ def make_app(config):
         (r"/token_price", FetchTokenHandler, {"config": config}),
     ])
 
+
 if __name__ == "__main__":
     tornado.options.define(name='config',
                            default='configs/main.yml',

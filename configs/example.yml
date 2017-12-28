@@ -8,6 +8,9 @@ bitstamp:
     secret: "put your bitstamp secret here"
     key: "put your bitstamp key here"
     customer_id: "put your bitstamp customer id here"
+binance:
+    secret: "put your binance secret here"
+    key: "put your binance key here"
 sheets:
     id: 'your google sheets id'
     secret_file: 'configs/client_secret.json'

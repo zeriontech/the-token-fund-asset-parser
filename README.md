@@ -31,3 +31,4 @@ First activate virtualenv by running:
  - Poloniex
  - Kraken
  - Bitstamp
+ - Binance

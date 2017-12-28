@@ -1,5 +1,4 @@
 import aiohttp
-import binascii
 from time import time
 import json
 from hashlib import sha256
